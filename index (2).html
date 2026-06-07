@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MoonMeow – Stray Cat Welfare, Moulvibazar</title>
+  <meta name="description" content="MoonMeow is Moulvibazar's first stray cat welfare organization. Founded by Nuzhat Nousin Seeme."/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --night: #0b0718;
+      --deep: #130d2a;
+      --violet: #6c3fcf;
+      --lavender: #a78bfa;
+      --lilac: #c4b5fd;
+      --moon: #f7e27a;
+      --rose: #f472b6;
+      --orange: #fb923c;
+      --orange-glow: rgba(251,146,60,0.35);
+      --mint: #6ee7b7;
+      --white: #fff;
+      --text: #e8e0ff;
+      --muted: #9d8ec4;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--night); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 2rem;
+      background: rgba(11,7,24,0.88); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(167,139,250,0.12);
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 1.35rem; color: var(--orange); }
+    .nav-logo span { color: var(--lavender); }
+    .nav-links { display: flex; gap: 0.2rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.8rem; font-weight: 500; color: var(--lilac); text-decoration: none; padding: 0.35rem 0.85rem; border-radius: 999px; transition: background 0.2s, color 0.2s; }
+    .nav-links a:hover { background: rgba(167,139,250,0.15); color: var(--white); }
+
+    .hero {
+      min-height: 100vh;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #2a1060 0%, #0b0718 70%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 1.5rem 5rem; position: relative; overflow: hidden;
+    }
+    canvas#stars { position: absolute; inset: 0; pointer-events: none; }
+    .moon-orb {
+      width: 110px; height: 110px;
+      background: radial-gradient(circle at 38% 32%, #ffe8cc 0%, #fb923c 50%, #c2540a 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 40px var(--orange-glow), 0 0 100px rgba(251,146,60,0.12);
+      margin-bottom: 1.8rem; position: relative; z-index: 2;
+      animation: moonFloat 5s ease-in-out infinite;
+      display: flex; align-items: center; justify-content: center; font-size: 3.2rem;
+      filter: drop-shadow(0 0 18px rgba(251,146,60,0.5));
+    }
+    @keyframes moonFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(2.6rem, 7vw, 5rem); font-weight: 900; line-height: 1.05; position: relative; z-index: 2; margin-bottom: 0.5rem; }
+    .hero h1 .line1 { display: block; color: var(--white); }
+    .hero h1 .line2 { display: block; background: linear-gradient(90deg, var(--orange), var(--moon), var(--lavender)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: clamp(0.92rem, 2vw, 1.1rem); color: var(--lilac); max-width: 520px; margin: 1rem auto 0.5rem; position: relative; z-index: 2; }
+    .hero-founder { font-size: 0.8rem; color: var(--muted); margin-bottom: 2.5rem; position: relative; z-index: 2; }
+    .hero-founder strong { color: var(--lavender); }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 2; }
+    .btn { display: inline-block; border-radius: 999px; padding: 0.75rem 2rem; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; text-decoration: none; transition: transform 0.15s, box-shadow 0.15s; }
+    .btn-gold { background: linear-gradient(135deg, var(--orange), #c2540a); color: var(--white); }
+    .btn-gold:hover { transform: scale(1.04); box-shadow: 0 6px 24px var(--orange-glow); }
+    .btn-ghost { background: transparent; color: var(--lilac); border: 1.5px solid rgba(167,139,250,0.5); }
+    .btn-ghost:hover { background: rgba(167,139,250,0.1); color: var(--white); }
+    .scroll-hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); color: var(--muted); font-size: 0.72rem; letter-spacing: 0.1em; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 2; }
+    .scroll-arrow { width: 18px; height: 18px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); animation: arrowBounce 1.5s infinite; margin-top: -4px; }
+    @keyframes arrowBounce { 0%,100%{transform:rotate(45deg) translateY(0);} 50%{transform:rotate(45deg) translateY(5px);} }
+
+    section { padding: 5rem 1.5rem; }
+    .container { max-width: 960px; margin: 0 auto; }
+    .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--lavender); margin-bottom: 0.6rem; }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--white); line-height: 1.1; margin-bottom: 0.8rem; }
+    .section-title span { color: var(--orange); }
+    .section-desc { color: var(--muted); font-size: 0.95rem; max-width: 560px; line-height: 1.75; }
+
+    .why-moon { background: linear-gradient(180deg, var(--night) 0%, #1a0d38 50%, var(--night) 100%); }
+    .why-moon-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .why-moon-visual { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+    .orange-cat-art { font-size: 5.5rem; line-height: 1; filter: drop-shadow(0 0 24px rgba(251,146,60,0.5)); animation: moonFloat 4s ease-in-out infinite; }
+    .poem-block { background: rgba(251,146,60,0.07); border: 1px solid rgba(251,146,60,0.22); border-radius: 16px; padding: 1.4rem 1.8rem; text-align: center; }
+    .poem-title { font-family: var(--font-display); font-size: 1.05rem; font-style: italic; color: var(--orange); margin-bottom: 0.5rem; }
+    .poem-emoji { font-size: 1.6rem; }
+    .why-moon-text p { color: var(--muted); font-size: 0.95rem; line-height: 1.85; margin-bottom: 1rem; }
+    .why-moon-text p strong { color: var(--moon); }
+    .founder-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(108,63,207,0.2); border: 1px solid rgba(108,63,207,0.35); border-radius: 12px; padding: 0.8rem 1.2rem; margin-top: 0.5rem; }
+    .founder-badge .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--violet), var(--rose)); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .founder-badge .info .name { font-weight: 600; font-size: 0.88rem; color: var(--white); }
+    .founder-badge .info .role { font-size: 0.73rem; color: var(--muted); }
+
+    .mission-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.2rem; margin-top: 2.5rem; }
+    .mission-card { border-radius: 18px; padding: 1.8rem 1.5rem; transition: transform 0.2s; }
+    .mission-card:hover { transform: translateY(-5px); }
+    .mc-1 { background: linear-gradient(135deg, #1e0a3c, #2d1260); border: 1px solid rgba(108,63,207,0.3); }
+    .mc-2 { background: linear-gradient(135deg, #1a1000, #3d2000); border: 1px solid rgba(251,146,60,0.3); }
+    .mission-icon { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
+    .mission-card h3 { font-family: var(--font-display); font-size: 1.15rem; color: var(--white); margin-bottom: 0.5rem; }
+    .mission-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
+
+    .gallery-section { background: var(--deep); }
+    .cats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 1rem; margin-top: 2.5rem; }
+    .cat-card { border-radius: 18px; padding: 1.6rem 1rem 1.2rem; text-align: center; transition: transform 0.2s; position: relative; overflow: hidden; }
+    .cat-card:hover { transform: translateY(-5px); }
+    .cc-moon { background: linear-gradient(135deg, #1f0d00, #3d1a00); border: 1px solid rgba(251,146,60,0.4); }
+    .cc-jacky { background: linear-gradient(135deg, #0a1e20, #103c40); border: 1px solid rgba(110,231,183,0.35); }
+    .cc-rose { background: linear-gradient(135deg, #200a18, #3d1030); border: 1px solid rgba(244,114,182,0.2); }
+    .cc-grace { background: linear-gradient(135deg, #0e0e20, #1e1e40); border: 1px solid rgba(167,139,250,0.2); }
+    .cat-emoji { font-size: 2.6rem; display: block; margin-bottom: 0.5rem; }
+    .cat-name { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--white); }
+    .cat-status { font-size: 0.72rem; margin-top: 4px; }
+    .status-fed { color: #fb923c; }
+    .status-care { color: #6ee7b7; }
+    .status-rip { color: var(--muted); font-style: italic; }
+    .cat-note { font-size: 0.72rem; color: var(--muted); margin-top: 6px; line-height: 1.45; }
+    .upload-card { border-radius: 18px; padding: 1.6rem 1rem; text-align: center; border: 2px dashed rgba(167,139,250,0.25); cursor: pointer; transition: border-color 0.2s, background 0.2s; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+    .upload-card:hover { border-color: var(--lavender); background: rgba(167,139,250,0.05); }
+    .upload-card .up-icon { font-size: 1.8rem; }
+    .upload-card .up-label { font-size: 0.82rem; color: var(--lavender); font-weight: 500; }
+    .upload-card .up-sub { font-size: 0.7rem; color: var(--muted); }
+
+    .founder-section { background: linear-gradient(180deg, var(--night) 0%, #160b30 100%); }
+    .founder-inner { display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center; }
+    .founder-avatar-big { width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #3d1a00, #c2540a); display: flex; align-items: center; justify-content: center; font-size: 3.8rem; box-shadow: 0 0 40px rgba(251,146,60,0.3); flex-shrink: 0; }
+    .founder-name { font-family: var(--font-display); font-size: 1.9rem; color: var(--white); margin-bottom: 0.3rem; }
+    .founder-title { font-size: 0.82rem; color: var(--lavender); margin-bottom: 1.2rem; letter-spacing: 0.04em; }
+    .founder-bio p { color: var(--muted); font-size: 0.92rem; line-height: 1.85; margin-bottom: 0.8rem; }
+    .founder-bio p strong { color: var(--orange); }
+    .founder-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem; }
+    .tag { padding: 0.3rem 0.9rem; border-radius: 999px; font-size: 0.75rem; font-weight: 500; }
+    .tag-purple { background: rgba(108,63,207,0.2); color: var(--lavender); border: 1px solid rgba(108,63,207,0.35); }
+    .tag-orange { background: rgba(251,146,60,0.14); color: #fdba74; border: 1px solid rgba(251,146,60,0.28); }
+    .tag-mint { background: rgba(110,231,183,0.1); color: var(--mint); border: 1px solid rgba(110,231,183,0.22); }
+
+    .contact-section { background: var(--deep); }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 1rem; margin-top: 2.5rem; }
+    .contact-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(167,139,250,0.12); border-radius: 16px; padding: 1.4rem; transition: border-color 0.2s, transform 0.2s; }
+    .contact-card:hover { border-color: rgba(167,139,250,0.3); transform: translateY(-3px); }
+    .cc-icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
+    .cc-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .cc-value { font-size: 0.9rem; font-weight: 500; color: var(--white); }
+    .cc-value a { color: var(--lavender); text-decoration: none; }
+    .cc-value a:hover { text-decoration: underline; }
+    .emergency-banner { margin-top: 2rem; background: linear-gradient(135deg, rgba(251,146,60,0.1), rgba(251,146,60,0.03)); border: 1px solid rgba(251,146,60,0.25); border-radius: 14px; padding: 1.2rem 1.5rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .emergency-banner .em-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .emergency-banner .em-title { font-weight: 600; color: #fdba74; font-size: 0.92rem; margin-bottom: 3px; }
+    .emergency-banner .em-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+
+    footer { background: #060310; border-top: 1px solid rgba(167,139,250,0.1); padding: 2.5rem 1.5rem; text-align: center; }
+    .footer-logo { font-family: var(--font-display); font-size: 1.5rem; color: var(--orange); margin-bottom: 0.4rem; }
+    .footer-tagline { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--lavender); }
+    .footer-copy { font-size: 0.75rem; color: rgba(157,142,196,0.45); }
+    .footer-copy strong { color: var(--lavender); }
+
+    @media (max-width: 680px) {
+      nav { padding: 0.7rem 1rem; }
+      .nav-links a { padding: 0.28rem 0.55rem; font-size: 0.7rem; }
+      .why-moon-inner { grid-template-columns: 1fr; }
+      .founder-inner { grid-template-columns: 1fr; text-align: center; }
+      .founder-avatar-big { margin: 0 auto 1rem; }
+      .founder-tags { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🌙 Moon<span>Meow</span></div>
+  <div class="nav-links">
+    <a href="#why">Our Story</a>
+    <a href="#mission">Mission</a>
+    <a href="#cats">Our Cats</a>
+    <a href="#founder">Founder</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero" id="top">
+  <canvas id="stars"></canvas>
+  <div class="moon-orb">🌙</div>
+  <h1>
+    <span class="line1">Every Cat Deserves</span>
+    <span class="line2">a Full Moon Night</span>
+  </h1>
+  <p class="hero-sub">Moulvibazar's first stray cat welfare organization — born from love, built on hope, one rescue at a time.</p>
+  <p class="hero-founder">Founded by <strong>Nuzhat Nousin Seeme</strong> &nbsp;·&nbsp; Moulvibazar, Sylhet</p>
+  <div class="hero-btns">
+    <a href="#cats" class="btn btn-gold">Meet the Cats</a>
+    <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+  </div>
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<section class="why-moon" id="why">
+  <div class="container">
+    <div class="why-moon-inner">
+      <div class="why-moon-visual">
+        <div class="orange-cat-art">🐈</div>
+        <div class="poem-block">
+          <div class="poem-title">me and my moon; a poem and its pause</div>
+          <div class="poem-emoji">🌙</div>
+        </div>
+      </div>
+      <div class="why-moon-text">
+        <div class="section-label">Our Name &amp; Story</div>
+        <h2 class="section-title" style="color:var(--white);">Why <span>"Moon"</span>?</h2>
+        <p>Moon is my first rescued cat. I found him on the street and brought him home in <strong>November 2024</strong>. He is an orange male cat, and he is the reason this organization exists.</p>
+        <p>His name became the name of this mission — because every stray out there deserves what Moon has now: <strong>a name, a home, and someone who cares.</strong></p>
+        <div class="founder-badge">
+          <div class="avatar">🌙</div>
+          <div class="info">
+            <div class="name">Nuzhat Nousin Seeme</div>
+            <div class="role">Founder · MoonMeow · Moulvibazar, Sylhet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mission">
+  <div class="container">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Pillars of <span>Care</span></h2>
+    <p class="section-desc">MoonMeow is just beginning its journey. For now, we focus on two things that matter most — keeping strays fed, and keeping them healthy.</p>
+    <div class="mission-grid">
+      <div class="mission-card mc-1">
+        <span class="mission-icon">🍲</span>
+        <h3>Daily Feeding</h3>
+        <p>No cat should go to bed hungry. We feed stray cats in our area regularly — making sure familiar faces on the street have a warm meal waiting for them each day.</p>
+      </div>
+      <div class="mission-card mc-2">
+        <span class="mission-icon">💉</span>
+        <h3>Medical Care</h3>
+        <p>Vaccinations, basic treatment, and care for cats in need. We started with our own cats and we are working to extend this to more strays in Moulvibazar as we grow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-section" id="cats">
+  <div class="container">
+    <div class="section-label">The Ones We Love</div>
+    <h2 class="section-title">Our <span>Cats</span></h2>
+    <p class="section-desc">Every single one of them has a name. Every single one has a story. These are the four cats who started it all — rescued, adopted, and deeply loved.</p>
+    <div class="cats-grid">
+
+      <div class="cat-card cc-moon">
+        <span class="cat-emoji">🐈</span>
+        <div class="cat-name">Moon</div>
+        <div class="cat-status status-fed">● Fed every day</div>
+        <div class="cat-note">Rescued &amp; adopted Nov 2024. Our orange boy. The reason this all began. Vaccinated and endlessly loved.</div>
+      </div>
+
+      <div class="cat-card cc-jacky">
+        <span class="cat-emoji">🐱</span>
+        <div class="cat-name">Jacky</div>
+        <div class="cat-status status-care">● Fed daily · In care</div>
+        <div class="cat-note">Rescued &amp; adopted. Jacky is being looked after with everything we have.</div>
+      </div>
+
+      <div class="cat-card cc-rose">
+        <span class="cat-emoji">🌸</span>
+        <div class="cat-name">Rose</div>
+        <div class="cat-status status-rip">No longer with us</div>
+        <div class="cat-note">Rescued &amp; adopted. Rose was gentle and beautiful. She will always be remembered.</div>
+      </div>
+
+      <div class="cat-card cc-grace">
+        <span class="cat-emoji">🕊️</span>
+        <div class="cat-name">Grace</div>
+        <div class="cat-status status-rip">No longer with us</div>
+        <div class="cat-note">Rescued &amp; adopted. Grace lived up to her name in every way. Forever in our hearts.</div>
+      </div>
+
+      <div class="upload-card" onclick="document.getElementById('submitModal').style.display='flex'">
+        <div class="up-icon">📷</div>
+        <div class="up-label">Spotted a stray?</div>
+        <div class="up-sub">Submit a photo &amp; location</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="founder-section" id="founder">
+  <div class="container">
+    <div class="founder-inner">
+      <div class="founder-avatar-big">🌙</div>
+      <div class="founder-bio">
+        <div class="section-label">Meet the Founder</div>
+        <h2 class="founder-name">Nuzhat Nousin Seeme</h2>
+        <div class="founder-title">Founder &amp; Director · MoonMeow.com · Moulvibazar, Sylhet</div>
+        <p>Nuzhat Nousin Seeme is the founder of <strong>MoonMeow</strong> — Moulvibazar's first organization dedicated to the welfare of stray cats. Her journey began not with a plan, but with a cat. In November 2024, she rescued an orange stray she named <strong>Moon</strong>, and everything changed.</p>
+        <p>Looking at the streets of Moulvibazar, she realized there was no one doing this work — no NGO, no shelter, no one feeding strays consistently. So she decided to start something herself, from zero, with nothing but care and quiet determination.</p>
+        <p>MoonMeow is still in its early days. But it is real, it is growing, and <strong>it started because one person refused to look away.</strong></p>
+        <div class="founder-tags">
+          <span class="tag tag-purple">Animal Welfare Advocate</span>
+          <span class="tag tag-orange">Cat Rescuer</span>
+          <span class="tag tag-mint">Moulvibazar, Sylhet</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="section-label">Reach Us</div>
+    <h2 class="section-title">Contact <span>MoonMeow</span></h2>
+    <p class="section-desc">Want to help, report a cat in distress, or just say hello? We would love to hear from you.</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="cc-icon">📞</div>
+        <div class="cc-label">Phone &amp; WhatsApp</div>
+        <div class="cc-value">+880 01971780438</div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">📧</div>
+        <div class="cc-label">Email</div>
+        <div class="cc-value"><a href="mailto:nuzhatnousin04@gmail.com">nuzhatnousin04@gmail.com</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">📍</div>
+        <div class="cc-label">Location</div>
+        <div class="cc-value">Moulvibazar, Sylhet, Bangladesh</div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">🌐</div>
+        <div class="cc-label">Website</div>
+        <div class="cc-value"><a href="#">moonmeow.com</a></div>
+      </div>
+    </div>
+    <div class="emergency-banner">
+      <div class="em-icon">🚨</div>
+      <div>
+        <div class="em-title">Found an injured or distressed cat?</div>
+        <div class="em-desc">Send us a WhatsApp message at +880 01971780438 with your location and a photo. We will do our best to help as quickly as we can.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">🌙 MoonMeow</div>
+  <div class="footer-tagline">For every stray who deserves to be seen · Moulvibazar, Sylhet, Bangladesh</div>
+  <div class="footer-links">
+    <a href="#top">Home</a>
+    <a href="#why">Our Story</a>
+    <a href="#mission">Mission</a>
+    <a href="#cats">Our Cats</a>
+    <a href="#founder">Founder</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="footer-copy">
+    © 2025 MoonMeow.com &nbsp;·&nbsp; Founded &amp; built by <strong>Nuzhat Nousin Seeme</strong> &nbsp;·&nbsp; All rights reserved
+  </div>
+</footer>
+
+<!-- PHOTO SUBMIT MODAL -->
+<div id="submitModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.72); z-index:9999; align-items:center; justify-content:center; padding:1rem;">
+  <div style="background:#130d2a; border:1px solid rgba(167,139,250,0.25); border-radius:20px; padding:2rem; max-width:400px; width:100%; position:relative;">
+    <button onclick="document.getElementById('submitModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
+    <div style="font-family:var(--font-display);font-size:1.2rem;color:var(--white);margin-bottom:0.4rem;">Spotted a stray? 📷</div>
+    <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1.2rem;">Send us an email with a photo and the location of the cat and we will look into it.</div>
+    <div style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.22);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem;">
+      <div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;">Send your photo to</div>
+      <div style="font-size:1rem;font-weight:600;color:var(--orange);">nuzhatnousin04@gmail.com</div>
+      <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Include: photo + street or area name</div>
+    </div>
+    <button onclick="document.getElementById('submitModal').style.display='none'" class="btn btn-ghost" style="width:100%;">Close</button>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 160; i++) {
+      stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.4+0.3, alpha: Math.random(), delta: (Math.random()*0.007+0.002)*(Math.random()>0.5?1:-1) });
+    }
+  }
+  function drawStars() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s => {
+      s.alpha += s.delta;
+      if (s.alpha<=0.1||s.alpha>=1) s.delta*=-1;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,240,210,${s.alpha})`; ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  resize(); initStars(); drawStars();
+  window.addEventListener('resize',()=>{ resize(); initStars(); });
+
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const t=document.querySelector(a.getAttribute('href'));
+      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+    });
+  });
+</script>
+</body>
+</html>
